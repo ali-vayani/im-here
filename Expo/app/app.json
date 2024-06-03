@@ -14,10 +14,7 @@
           "origin": "https://n"
         }
       ],
-      "expo-font",
-      {
-        "fonts": "./src/assets/Mulish/Mulish-VariableFont_wght.ttf"
-      }
+      "expo-font"
     ],
     "name": "app",
     "slug": "app"
