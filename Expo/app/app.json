@@ -13,7 +13,11 @@
         {
           "origin": "https://n"
         }
-      ]
+      ],
+      "expo-font",
+      {
+        "fonts": "./src/assets/Mulish/Mulish-VariableFont_wght.ttf"
+      }
     ],
     "name": "app",
     "slug": "app"
