@@ -1,20 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableWithoutFeedback, StyleSheet, TextInput, Keyboard, TouchableOpacity } from "react-native";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { FIREBASE_AUTH } from "firebaseConfig";
-import { Stack, useNavigation, useRouter, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from "expo-router";
 
 
-export default function SignIn() {
+export default function CreateAccount() {
   const [username, setUsername] = useState('test@gmail.com')
   const [password, setPassword] = useState('123123')
-  const navigation = useNavigation();
-  const router = useRouter();
-  const params = useLocalSearchParams();
-
-  useEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  }, [navigation]);
+  const { userID } = useLocalSearchParams<{ userID: any }>();
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -28,7 +22,7 @@ export default function SignIn() {
       //Signed in
       const user = userCredential.user;
       const uid = user.uid;
-      router.setParams({ userID: uid });
+      console.log(uid)
       console.log("Logged In");
     } catch (error) {
         const errorCode = error.code;
@@ -41,14 +35,12 @@ export default function SignIn() {
   
   }
   const createAccount = () => {
-    const uid = params.userID;
-    router.replace({ pathname: '/CreateAccount', params: { userID: uid } });
-  };
-  
+    console.log(userID);
+  }
 
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
-      <View className="flex flex-1 bg-background items-center justify-start">
+      <View className="flex flex-1 bg-secondary items-center justify-start">
         <View className="flex h-1/3 w-full items-center justify-end">
           <Text className="text-5xl font-semibold">I'm Here</Text>
         </View>
