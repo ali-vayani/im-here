@@ -8,7 +8,7 @@ import { useLocalSearchParams } from "expo-router";
 export default function CreateAccount() {
   const [username, setUsername] = useState('test@gmail.com')
   const [password, setPassword] = useState('123123')
-  const { userID } = useLocalSearchParams<{ userID: any }>();
+  const { userID } = useLocalSearchParams<{ userID: string }>();
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
