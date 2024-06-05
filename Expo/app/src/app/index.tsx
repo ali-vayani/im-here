@@ -1,54 +1,64 @@
+// imports
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableWithoutFeedback, StyleSheet, TextInput, Keyboard, TouchableOpacity } from "react-native";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { View, Text, TouchableWithoutFeedback, TextInput, Keyboard, TouchableOpacity } from "react-native";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { FIREBASE_AUTH } from "firebaseConfig";
-import { Stack, useNavigation, useRouter, useLocalSearchParams } from 'expo-router';
+import { useNavigation, useRouter, useLocalSearchParams } from 'expo-router';
 
 
 export default function SignIn() {
+  // state variables for user info
   const [username, setUsername] = useState('test@gmail.com')
   const [password, setPassword] = useState('123123')
+
+  // navigation variables
   const navigation = useNavigation();
   const router = useRouter();
   const params = useLocalSearchParams();
 
+  // removes header on load
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
 
+  // dismisses keyboard when needed
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
 
+  // uses firebase auth to log user in
   const login = async (username, password) => {
-    console.log("test")
     try {
-      const userCredential = await signInWithEmailAndPassword(FIREBASE_AUTH, username, password);
-  
-      //Signed in
+      const userCredential = await signInWithEmailAndPassword(FIREBASE_AUTH, username, password); // logs user in using email & pw
+
+      // Gets User ID
       const user = userCredential.user;
       const uid = user.uid;
-      router.setParams({ userID: uid });
-      console.log("Logged In");
+      router.setParams({ userID: uid }); // Sets UID as route param
+
     } catch (error) {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error(`Error [${errorCode}]: ${errorMessage}`);
+      // logs error in case issue hasppens
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(`Error [${errorCode}]: ${errorMessage}`);
     }
   }
   
+  // sends reset password link to user
   const resetPassword = (username, phoneNumber) => {
   
   }
+  // redirects user to create acc page
   const createAccount = () => {
     const uid = params.userID;
-    router.replace({ pathname: '/CreateAccount', params: { userID: uid } });
+    router.replace({ pathname: '/Screens/CreateUsername'});
   };
   
 
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
       <View className="flex flex-1 bg-background items-center justify-start">
+
         <View className="flex h-1/3 w-full items-center justify-end">
           <Text className="text-5xl font-semibold">I'm Here</Text>
         </View>

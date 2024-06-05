@@ -6,16 +6,17 @@ export default function Layout() {
     <Stack
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#f4511e',
+          backgroundColor: '#5147c2',
         },
-        headerTintColor: '#fff',
+        headerTintColor: '#f4f4f4',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
       }}>
       {/* Optionally configure static options outside the route.*/}
       <Stack.Screen name="index" options={{}} />
-      <Stack.Screen name="CreateAccount" options={{}} />
+      <Stack.Screen name="Screens/CreateUsername" options={{}} />
+      <Stack.Screen name="Screens/CreatePassword" options={{}} />
     </Stack>
   );
 }
