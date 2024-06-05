@@ -1,10 +1,10 @@
 // imports
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TouchableWithoutFeedback, TextInput, Keyboard, TouchableOpacity } from "react-native";
 import { useNavigation, useRouter, useLocalSearchParams } from 'expo-router';
-import { FIREBASE_AUTH } from "firebaseConfig";
+import { FIREBASE_AUTH, FIREBASE_APP } from "firebaseConfig";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 
 export default function PhoneAuth() {
     // getting router param
@@ -12,9 +12,10 @@ export default function PhoneAuth() {
 
     // state variables for user info
     const [username, setUsername] = useState(usernameParam);
-    const [phoneNumber, setPhoneNumber] = useState('test2@gmail.com')
+    const [phoneNumber, setPhoneNumber] = useState('8177516404')
     const [verificationCode, setVerificationCode] = useState('');
     const [displayVerification, setDisplayVerification] = useState(false);
+    const recaptchaVerifier = useRef(null);
 
     // navigation variables
     const navigation = useNavigation();
@@ -31,16 +32,36 @@ export default function PhoneAuth() {
         Keyboard.dismiss();
     };
 
-    const verifyNumber = (phoneNumber) => {
-        setDisplayVerification(true);
-        // FIREBASE_AUTH.languageCode = 'it';
-        // window.recaptchaVerifier = new RecaptchaVerifier(auth, 'sign-in-button', {
+    useEffect(() => {
+        // const recaptchaVerifierInstance = new RecaptchaVerifier(
+        //     'recaptcha-container',
+        // {
+        //     size: 'invisible',
+        //     callback: (response) => {
+        //       // reCAPTCHA solved, allow signInWithPhoneNumber.
+        //     },
+        // },
+        //     FIREBASE_AUTH
+        // );
+    
+        // recaptchaVerifier.current = recaptchaVerifierInstance;
+        // const recaptchaVerifierInstance = new RecaptchaVerifier(FIREBASE_AUTH, 'sign-in-button', {
         //     'size': 'invisible',
         //     'callback': (response) => {
-        //       // reCAPTCHA solved, allow signInWithPhoneNumber.
-        //         onSignInSubmit();
-        //     }
-        // });
+        //     }})
+        // recaptchaVerifier.current = recaptchaVerifierInstance;
+        // console.log("idfk what i'm doing but i'm doing something")
+    }, []);
+
+    const verifyNumber = async (phoneNumber) => {
+        setDisplayVerification(true);
+
+        console.log("sending code")
+
+        await signInWithPhoneNumber(FIREBASE_AUTH, phoneNumber, recaptchaVerifier.current)
+            .then((result) => {
+                console.log(result)
+            })
 
     }
     const resendVerification = (phoneNumber) => {
@@ -87,7 +108,10 @@ export default function PhoneAuth() {
                 <Text className="text-primary text-xl font-medium">Resend</Text>
             </TouchableOpacity>
             }
-            
+            <FirebaseRecaptchaVerifierModal
+                ref={recaptchaVerifier}
+                firebaseConfig={FIREBASE_APP.options}
+            />
             </View>
         </View>
         </TouchableWithoutFeedback>
