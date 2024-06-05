@@ -25,7 +25,7 @@ export default function CreateUsername() {
   };
 
   const createPassword = (username) => {
-    router.replace({ pathname: '/Screens/CreatePassword', params: { username: username } });
+    router.replace({ pathname: '/Screens/PhoneAuth', params: { username: username } });
   }
 
   return (
