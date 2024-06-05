@@ -10,7 +10,7 @@ module.exports = {
         'primary': "#5147c2",
         'secondary': "#d8d89f",
         'accent': "#ed7e58",
-        
+        'error': '#c24747'
       },      
     },
   },
